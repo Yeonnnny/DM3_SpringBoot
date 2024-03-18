@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thymeleaf Collection 처리</title>
+    
+    <style >
+    
+    	.mystyle{
+    		color:red;
+    		font-weight:bolder;
+    	}
+    
+    </style>
+    
+</head>
+<body>
+    
+    <h2>[ Thymeleaf Collection 처리 ]</h2>
+
+    <div>
+	    <a th:href="@{/}"> <img th:src="@{/images/home.png}" alt="logo"> </a>	<!-- 외부 파일과 함께 쓰려면 th:를 붙여줌 -->
+	</div>
+
+    <h3>11. List의 데이터 처리</h3>
+    <p> List : <span th:text="${list}"></span> </p>
+    <p> Map : <span th:text="${map}"></span> </p>
+    
+    <hr>
+    <h3>12. 기본 객체의 처리(List)</h3>
+    <ul>
+        <li> ArrayList size : <span th:text="${#lists.size(list)}"></span> </li>
+        <li> ArrayList size (두 번째 방법): <span th:text="${list.size()}"></span> </li>
+        <li> ArrayList isEmpty : <span th:text="${#arrays.isEmpty(list)}"></span> </li>
+        <li> ArrayList isEmpty (두 번째 방법): <span th:text="${list.isEmpty()}"></span> </li>
+        <li> List를 문자열로 변환 (join): <span th:text="${#strings.arrayJoin(list,'/')}"></span> </li>
+        <li> 문자열을 List로 변환 (split): <span th:text="${#strings.listSplit(lunch,',')}"></span> </li>
+        <li> 특정 문자열('딸기')의 포함여부: <span th:text="${#lists.contains(list,'딸기')}"></span> </li>
+		
+    </ul>
+    
+    <hr>
+    <h3>13. 기본 객체의 처리(Map)</h3>    
+    <ul>
+    	<li>Map의 Key(kim) 존재 여부 : <span th:text="${map.containsKey('kim')}" >HashMap</span> </li>
+    	<li>Map의 data 존재 여부 (isEmpty) : <span th:text="${map.isEmpty()}" >HashMap</span> </li>
+    	<li>Map의 크기 (size) : <span th:text="${#maps.size(map)}" >HashMap</span> </li>
+    	<li>Map의 크기 (size : 두 번째 방법) : <span th:text="${map.size()}" >HashMap</span> </li>
+    </ul>
+    
+    
+    <hr>
+    <h3>14. 반복문의 사용(일반 문자열)</h3>
+    <ul th:each="str : ${list}" >
+    	<li th:text="${str}">과일</li>
+    </ul>
+
+
+    <hr>
+    <h3>15. 반복문의 사용(ArrayList)</h3>
+    <table border="1" >
+    	<tr>
+    		<th>이름</th>
+    		<th>나이</th>
+    		<th>전화번호</th>
+    		<th>생년월일</th>
+    		<th>성향</th>
+    	</tr>
+    	
+    	<tr th:each="friend : ${friendList}" >
+	    	<td th:text="${friend.fname}">친구</td>
+	    	<td th:text="${friend.age}">나이</td>
+	    	<td th:text="${friend.phone}">전화번호</td>
+	    	<td th:text="${friend.birthday}">생년월일</td>
+	    	<td th:text="${friend.active}? '외향적':'내성적'">성향</td>
+    	</tr>
+    </table>
+    
+
+
+    <hr>
+    <h3>16. 반복문의 사용(Map에 들어있는 친구 정보)</h3>
+	<p>저장된 친구 수 : [[${map.size()}]]</p>
+    <table border="1" >
+    	<tr>
+    		<th>번호</th>
+    		<th>이름</th>
+    		<th>나이</th>
+    		<th>전화번호</th>
+    		<th>생년월일</th>
+    		<th>성향</th>
+    	</tr>
+    	
+    	<tr th:each="friend, status : ${map}" >
+	    	<td th:text="${status.count}">상태</td>	    	
+	    	<td th:text="${friend.value.fname}">친구</td>
+	    	<td th:text="${friend.value.age}">나이</td>
+	    	<td th:text="${friend.value.phone}">전화번호</td>
+	    	<td th:text="${friend.value.birthday}">생년월일</td>
+	    	<td th:text="${friend.value.active}? '외향적':'내성적'">성향</td>
+    	</tr>
+    </table>
+    
+    <hr>
+    <h3>연습 : count가 홀수인 애들만 만들기</h3>
+	<p>저장된 친구 수 : [[${map.size()}]]</p>
+    <table border="1" >
+    	<tr>
+    		<th>번호</th>
+    		<th>이름</th>
+    		<th>나이</th>
+    		<th>전화번호</th>
+    		<th>생년월일</th>
+    		<th>성향</th>
+    	</tr>
+    	
+    	<tr th:each="friend, status : ${map}" >
+	    	<td th:text="${status.count}">상태</td>	    	
+	    	<td th:if="${status.count%2==0}" th:text="${friend.value.fname}" class="mystyle">친구</td>
+	    	<td th:unless="${status.count%2==0}" th:text="${friend.value.fname}" >친구</td>
+	    	<td th:text="${friend.value.age}">나이</td>
+	    	<td th:text="$+{friend.value.phone}">전화번호</td>
+	    	<td th:text="${friend.value.birthday}">생년월일</td>
+	    	<td th:text="${friend.value.active}? '외향적':'내성적'">성향</td>
+    	</tr>
+    	   	
+    </table>
+
+
+
+    <hr>
+    <h3>17. 반복문과 상태값</h3>
+	<ul>
+		<li th:each="num, status : ${numList}">
+			<span>index:[[${status.index}]], status:[[${status.count}]]</span>
+			<span th:if="${status.index%5==0}" th:text="${num}" class="mystyle"></span>
+			<span th:unless="${status.index%5==0}" >====================</span>
+		</li>
+		
+	</ul>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

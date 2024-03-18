@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록 목록</title>
+</head>
+
+<body>
+    <h2>[ 방명록 목록 ] </h2>
+    <hr>
+    <a th:href="@{/}">첫 화면으로</a>
+    <hr>
+
+    <p th:if="${#lists.isEmpty(list)}"> 등록된 방명록이 없습니다. </p>
+    <div th:unless="${#lists.isEmpty(list)}">
+
+        <p>등록된 방명록의 수 : <span th:text="${list.size()}"></span> </p>
+
+        <table border="1">
+
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>내용</th>
+                <th>날짜</th>
+                <th></th>
+            </tr>
+
+            <tr th:each="guestbook, status: ${list}">
+                <td th:text="${status.count}"></td>
+                <td th:text="${guestbook.guestName}"></td>
+                <td th:text="${guestbook.guestText}"></td>
+                <td th:text="${guestbook.regdate}"></td>
+                <td>
+                    <input type="button" class="delbtn" th:data_pwd="${guestbook.guestPwd}"
+                        th:data_no="${guestbook.guestSeq}" value="삭제">
+                    <input type="button" class="updatebtn" th:data_pwd="${guestbook.guestPwd}"
+                        th:data_no="${guestbook.guestSeq}" value="수정">
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <form id="sendOne" th:action="@{/deleteOne}" method="get">
+        <input type="hidden" id="guestSeq" name="guestSeq" value="">
+    </form>
+
+    <script th:inline="javascript">
+
+        let delbtn = document.getElementsByClassName("delbtn");
+        let updatebtn = document.getElementsByClassName("updatebtn");
+
+        // 모든 버튼에 이벤트 걸어줌
+        for (let i = 0; i < delbtn.length; i++) {
+            delbtn[i].addEventListener('click', deleteOne)
+            updatebtn[i].addEventListener('click', updateOne)
+        }
+
+        function deleteOne() {
+            let confirm_pwd = prompt("비밀번호를 입력하세요");
+
+            let guest_pwd = this.getAttribute("data_pwd");
+
+            if (confirm_pwd == guest_pwd) {
+                let data_no = this.getAttribute("data_no");
+                document.getElementById("guestSeq").value = data_no;
+                document.getElementById("sendOne").action = "deleteOne";
+                document.getElementById("sendOne").submit();
+            }
+            else {
+                alert("비밀번호가 일치하지 않습니다.");
+            }
+        }
+        function updateOne() {
+            let confirm_pwd = prompt("비밀번호를 입력하세요");
+
+            let guest_pwd = this.getAttribute("data_pwd");
+
+            if (confirm_pwd == guest_pwd) {
+                let data_no = this.getAttribute("data_no");
+                document.getElementById("guestSeq").value = data_no;
+                document.getElementById("sendOne").action = "updateOne";
+                document.getElementById("sendOne").submit();
+            }
+            else {
+                alert("비밀번호가 일치하지 않습니다.");
+            }
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

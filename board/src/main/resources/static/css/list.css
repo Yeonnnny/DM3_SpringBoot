@@ -1,0 +1,87 @@
+@charset "UTF-8";
+@import "main.css";
+
+div.content {
+    width: 1100px;
+    margin: 0 auto;
+}
+
+/* **************************************
+    검색창, 글개수 출력 부분 (상단)
+**************************************** */
+div.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.search {
+    width: 520px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+select {
+    width: 130px;
+    height: 43px;
+    border: 0;
+    outline: 1px solid rgb(0, 125, 179);
+    border-radius: 8px;
+}
+
+input[type="text"] {
+    width: 270px;
+    height: 42px;
+    border: 1px solid rgb(0, 125, 179);
+    border-radius: 8px;
+}
+
+/* **************************************
+    글쓰기 버튼
+**************************************** */
+
+div.write {
+    margin-top: 15px;
+    text-align: right;
+}
+
+
+/* **************************************
+    페이지 네비게이션
+**************************************** */
+
+nav.pagination {
+    width: 1100px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+
+/* **************************************
+    페이지 네비게이션
+**************************************** */
+
+/* 글번호, 작성자, 조회수 : 130px
+    작성일 : 250px
+*/
+
+.current{
+    font-weight: bold;
+    color: red;
+}
+
+.page-no{
+    display: inline-block;
+    width: 20px;
+    height: 30px;
+    padding: 0.4rem; /*rem : body 사이즈를 기준으로 함*/
+    line-height: 1rem;
+    margin: 0px 1.6px;
+}
+
+.navi{
+    font-size: 1.5em;
+    width: 10px;
+}

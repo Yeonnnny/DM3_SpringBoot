@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>첫 번째 응답</title>
+</head>
+<body>
+    <h2>첫 번째 응답</h2>
+    <hr>
+    <h3>방법-1</h3>
+    <p> name : [[${name}]] </p>
+    <p> age : [[${age}]]</p>
+    <p> join_date : [[${join_date}]] </p>
+    
+    <hr>
+    <h3>방법-2</h3>
+    <p>name : <span th:text="${name}">아무개씨</span> </p>
+    <p>age : <span th:text="${age}">아무개</span> </p>
+    <p>join_date : <span th:text="${join_date}">아무개</span> </p>
+    
+    <hr>
+    <h3>a태그로 서버에 데이터 전달하기 (a태그 전달방식은 무조건 get방식)</h3>
+    <a href="input?name=전우치&age=45">이름과 나이 전달하기</a>
+
+
+</body>
+</html>

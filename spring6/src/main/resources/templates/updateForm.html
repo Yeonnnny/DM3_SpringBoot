@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구 정보 수정</title>
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>[ 친구 정보 수정 ]</h2>
+    <hr>
+    <a th:href="@{/list}">이전 화면으로..</a>
+    <hr>
+
+    <form th:action="@{/updateProc}" method="post" th:object="${friendDTO}"> <!--데이터를 보내야 하기 때문에 post 방식!-->
+
+        <input type="hidden" name="friendSeq" th:value="${friendDTO.friendSeq}">
+
+        <label for="fname">
+            이름 : <input type="text" id="fname" name="fname" th:field="*{fname}" placeholder="이름 입력">
+            <span class="error" th:errors="*{fname}"></span>
+        </label> <br>
+        <label for="age">
+            나이 : <input type="number" id="age" name="age" th:field="*{age}" placeholder="나이 입력">
+            <span class="error" th:errors="*{age}"></span>
+        </label><br>
+        <label for="phone">
+            전화번호 : <input type="text" name="phone" th:field="*{phone}" placeholder="전화 번호 입력">
+            <span class="error" th:errors="*{phone}"></span>
+        </label><br>
+        <label for="birthday">
+            생년월일 : <input type="date" name="birthday" th:value="*{birthday}" placeholder="생년월일 선택">
+            <span class="error" th:errors="*{birthday}"></span>
+        </label><br>
+
+        <label for="active">
+            성향 :
+            <input type="radio" name="active" value="1" th:checked="*{active}"> 외향적
+            <input type="radio" name="active" value="0" th:checked="not *{active}"> 내성적
+        </label><br><br>
+
+        <div>
+            <input type="submit" value="수정">
+            <input type="reset" value="초기화">
+        </div>
+
+
+
+    </form>
+
+
+</body>
+
+</html>

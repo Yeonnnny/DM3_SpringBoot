@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thymeleaf 연산자</title>
+</head>
+
+<body>
+
+    <h2>[Thymeleaf 연산자]</h2>
+
+    <div>
+        <a th:href="@{/}"> <img th:src="@{/images/home.png}" alt="logo"> </a> <!-- 외부 파일과 함께 쓰려면 th:를 붙여줌 -->
+    </div>
+
+	<hr>
+    <h3>18. 산술연산자(+ - * /(소수점 연산을 함)) </h3>
+    <ul>
+        <li>값 : [[${intNum}]] </li>
+        <li>값 + 10 : <span th:text="${intNum} + 10"></span> </li>
+        <li>값 - 10 : <span th:text="${intNum} - 10"></span> </li>
+        <li>값 * 22 : <span th:text="${intNum} * 22"></span> </li>
+        <li>값 / 10 : <span th:text="${intNum} / 10"></span> </li>
+        <li>값 % 3 : <span th:text="${intNum} % 3"></span> </li>
+		
+		<li>-----------------------------------------------------</li>
+        <li>값 : [[${dbNum}]] </li>
+        <li>값 / 10 : <span th:text="${dbNum} / 10"></span> </li>
+        <li>값 % 3 : <span th:text="${dbNum} % 3"></span> </li>
+    </ul>
+
+	<hr>
+    <h3>19. 문자열 결합 ( + ), 섞어쓰기( | ) </h3>
+	<ul>
+		<li>+ 기호로 결합 : <span th:text="'Hello, '+${name}+' nice to meet you!'"></span> </li>
+		<li>| 기호로 결합 : <span th:text="|Hello, ${name} nice to meet you!|"></span> </li>
+		
+		<li> <span th:text="${one}+' => '+${two}+', '+${three}+', 너구리, 오징어'"></span> </li>
+		<li> <span th:text="${one}+' => '+|${two}, ${three}, 너구리, 오징어|"></span> </li>
+		<li> <span th:text="|${one} => ${two}, ${three}, 너구리, 오징어|"></span> </li>
+	
+	</ul>
+	
+
+	<hr>
+    <h3>20. 비교연산 & 논리연산 </h3>
+	<ul>
+		<li>값 : [[${intNum}]] </li>
+		<li>비교 연산 ==(eq) : <span th:text="${intNum}%2 eq 0"></span> </li>
+		<li>비교 연산 !=(ne) : <span th:text="${intNum}%2 ne 0"></span> </li>
+		<li>비교 연산 &gt; (gt) : <span th:text="${intNum}%2 gt 0"></span> </li>
+		<li>비교 연산 &ge; (ge) : <span th:text="${intNum}%2 ge 0"></span> </li>
+		<li>비교 연산 &lt; (lt) : <span th:text="${intNum}%2 lt 0"></span> </li>
+		<li>비교 연산 &le; (le) : <span th:text="${intNum}%2 le 0"></span> </li>
+		<li>--------------------------------</li>
+		<li>논리 연산 (and) : <span th:text="${intNum}>10 and ${intNum}<30"></span> </li>
+		<li>논리 연산 (or) : <span th:text="${intNum}<10 or ${intNum}>30"></span> </li>
+		<li>논리 연산 (not) : <span th:text="not(${intNum}%2==0)"></span> </li>
+		<li>--------------------------------</li>		
+		<li>조건 연산 (?:) - 1 : <span th:text="${intNum}%2==0 ? ${intNum}+'는 짝수' : ${intNum}+'는 홀수'"></span> </li>
+		<li>조건 연산 (?:) - 2 : <span th:text="${intNum}%2==0 ? |${intNum}는 짝수| : |${intNum}는 홀수|"></span> </li>
+	</ul>
+	
+	
+	
+	<hr>
+    <h3>21. FriendDTO 객체를 사용하여 작업 </h3>
+	<ul th:object="${friend}">
+		<li>이름: <span th:text="*{fname}"></span> </li>
+		<li>나이: <span th:text="*{age}"></span> </li>
+		<li>전화번호: <span th:text="*{phone}"></span> </li>
+		<li>생년월일: <span th:text="*{birthday}"></span> </li>
+		<li>성향: <span th:text="*{active} ? '외향적' : '내향적'"></span> </li>
+	</ul>
+	
+	
+	
+
+</body>
+
+</html>

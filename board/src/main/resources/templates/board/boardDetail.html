@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 조회</title>
+
+    <!-- css 설정 -->
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/}"> <img th:src="@{/img/logo.png}" alt=""> </a>
+            <h2>게시글 보기</h2>
+        </div>
+    </div> <!-- .container 끝-->
+
+
+    <!-- 글보기 -->
+    <div class="content">
+        <table border="1">
+            <tr>
+                <th>작성자</th>
+                <td>
+                    <span th:text="${board.boardWriter}">작성자</span>
+                </td>
+            </tr>
+            <tr>
+                <th>글제목</th>
+                <td>
+                    <span th:text="${board.boardTitle}">글제목</span>
+                </td>
+            </tr>
+            <tr>
+                <th>작성일</th>
+                <td>
+                    <span th:text="${board.createDate}">작성일</span>
+                </td>
+            </tr>
+            <tr>
+                <th>수정일</th>
+                <td>
+                    <span th:text="${board.updateDate}">수정일</span>
+                </td>
+            </tr>
+            <tr>
+                <th>글내용</th>
+                <td>
+                    <pre>[[${board.boardContent}]]</pre>
+                </td>
+            </tr>
+            <tr>
+                <th>첨부파일</th>
+                <td>
+                    <span th:if="${board.originalFileName}!=null" class="attach">
+                        <a th:href="@{/board/download(boardNum=${board.boardNum})}" th:text="${board.originalFileName}"> bts.jpg</a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <a th:href="@{/board/boardUpdate(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-primary">수정</a>
+                    <a th:href="@{/board/boardDelete(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>
+                    <a th:href="@{/board/boardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-info">목록</a>
+                </th>
+            </tr>
+
+        </table>
+
+    </div> <!--.content 끝-->
+
+
+
+
+
+
+
+</body>
+
+</html>

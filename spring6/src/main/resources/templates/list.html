@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 친구 목록</title>
+
+</head>
+
+<body>
+    <h2>[ 전체 친구 목록 ]</h2>
+
+    <hr>
+    <a th:href="@{/}">첫 화면으로</a>
+    <hr>
+
+    <p th:if="${#lists.isEmpty(list)}">목록이 없습니다.</p>
+    <div th:unless="${#lists.isEmpty(list)}">
+
+        <table border="1">
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>나이</th>
+                <th>전화번호</th>
+                <th>생년월일</th>
+                <th>성향</th>
+                <th></th>
+            </tr>
+
+            <tr th:each="friend, status : ${list}">
+                <td th:text="${status.count}"></td>
+                <td th:text="${friend.fname}"></td>
+                <td th:text="${friend.age}"></td>
+                <td th:text="${friend.phone}"></td>
+                <td th:text="${friend.birthday}"></td>
+                <td th:text="${friend.active}? '외향적':'내성적'"></td>
+                <td>
+                    <!--사용자 정의 속성 : data라는 문자열을 포함해서 만듦-->
+                    <input type="button" class="deleteOne" th:data_no="${friend.friendSeq}" id="btn1" value="삭제">
+                    <input type="button" class="updateOne" th:data_no="${friend.friendSeq}" id="btn2" value="수정">
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <form id="sendOne" th:action="@{/deleteOne}" method="get">
+        <input type="hidden" id="friendSeq" name="friendSeq" value="">
+    </form>
+
+
+    <!--thymeleaf 문법을 사용하기 위해 파일로 빼지 않고 같은 문서 안에서 작성함-->
+    <!--javascript파일은 client에서 해석되므로 thymeleaf 구문이 해석되지 않은 채로 client에 전송됨..?-->
+    <!--javascript 안에 jquery 문법이 들어가면 th:inline="javascript" 써줘야 함-->
+    <script th:inline="javascript">
+        let delBtns = document.getElementsByClassName("deleteOne"); // 배열로 반환
+        let updateBtns = document.getElementsByClassName("updateOne")
+
+
+        for (let i = 0; i < delBtns.length; i++) {
+            delBtns[i].addEventListener('click', delFriend);
+            updateBtns[i].addEventListener('click', updateFriend);
+        }
+
+        // 아래 두개 함수 합쳐보기
+
+        // 친구 정보 삭제 함수 
+        function delFriend() {
+            // getAttribute 함수를 사용하는 이유 : 태그의 기본 속성이 아닌 사용자 정의 속성이기 때문
+            let data_no = this.getAttribute("data_no"); //삭제할 객체의 pk
+            document.getElementById("friendSeq").value = data_no; // input 태그의 value에  데이터 전달
+            document.getElementById("sendOne").action = 'deleteOne';  // 경로의 / 를 주면 context-path가 날아가기 때문에 요청문자열만 씀
+            document.getElementById("sendOne").submit(); // form 태그 가져와서 server쪽으로 보냄
+        }
+
+        // 친구 정보 수정 함수 
+        function updateFriend() {
+            // getAttribute 함수를 사용하는 이유 : 태그의 기본 속성이 아닌 사용자 정의 속성이기 때문
+            let data_no = this.getAttribute("data_no"); //삭제할 객체의 pk
+            document.getElementById("friendSeq").value = data_no; // hidden input 태그의 value에  데이터 전달
+            document.getElementById("sendOne").action = 'updateOne';
+            document.getElementById("sendOne").submit(); // form 태그 가져와서 server쪽으로 보냄
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록 쓰기</title>
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2> [방명록 쓰기] </h2>
+    <hr>
+    <a th:href="@{/}">첫 화면으로</a>
+    <hr>
+
+    <form th:action="@{/insert}" method="post" th:object="${guestbookDTO}">
+
+
+        <label for="guestName">
+            이름 : <input type="text" name="guestName" placeholder="이름 입력" th:value="*{guestName}">
+            <span class="error" th:errors="*{guestName}"></span>
+        </label>
+        <br>
+        <label for="guestPwd">
+            비밀번호 : <input type="password" name="guestPwd" placeholder="비밀번호 입력" th:value="*{guestPwd}">
+            <span class="error" th:errors="*{guestPwd}"></span>
+        </label>
+        <br>
+
+        방명록 입력 <br>
+        <textarea cols="50" rows="5" name="guestText" placeholder="내용 입력" th:value="*{guestText}"></textarea>
+        <span class="error" th:errors="*{guestText}"></span>
+
+
+        <div>
+            <input type="submit" id="btn_submit" value="작성 완료">
+            <input type="reset" value="초기화">
+        </div>
+
+    </form>
+
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "BoardApplication",
+            "request": "launch",
+            "mainClass": "net.kdigital.board.BoardApplication"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Spring6Application<spring6>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "net.kdigital.spring6.Spring6Application",
+            "projectName": "spring6",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Test3Application<test3>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "net.kdigital.test3.Test3Application",
+            "projectName": "test3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BoardApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "net.kdigital.board.BoardApplication",
+            "projectName": "board",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

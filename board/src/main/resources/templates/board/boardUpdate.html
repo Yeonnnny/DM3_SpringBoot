@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정 화면</title>
+
+    <!-- css 설정 -->
+    <link rel="stylesheet" th:href="@{/css/write.css}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/}"> <img th:src="@{/img/logo.png}" alt=""> </a>
+            <h2>게시글 수정</h2>
+        </div>
+    </div> <!-- .container 끝-->
+
+    <!-- 글쓰기 -->
+    <div class="content">
+        <form th:action="@{/board/boardUpdate}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+            <input type="hidden" name="searchItem" th:value="${searchItem}">
+            <input type="hidden" name="searchWord" th:value="${searchWord}">
+            <table border="1">
+                <tr>
+                    <th>작성자</th>
+                    <td><input id="boardWriter" type="text" name="boardWriter"  th:value="${board.boardWriter}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <th>글제목</th>
+                    <td><input id="boardTitle" type="text" name="boardTitle" th:value="${board.boardTitle}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>글내용</th>
+                    <td> <textarea name="boardContent" id="boardContent" cols="30" rows="10" required>[[${board.boardContent}]]</textarea> </td>
+                </tr>
+                <tr>
+                    <th>첨부파일</th>
+                    <td>
+                        <span th:if="${board.originalFileName}!=null" class="attach">
+                            <a th:href="@{/board/download(boardNum=${board.boardNum})}" th:text="${board.originalFileName}"> bts.jpg</a>
+                            <img th:src="@{/img/trash.png}" alt="삭제" id="delattach" >
+                            <br>
+                        </span>
+                        <input id="uploadFile" type="file" name="uploadFile">
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input type="submit" value="글수정" class="btn btn-primary"> &nbsp;
+                        <a th:href="@{/board/boardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-info">목록</a>
+                    </th>
+                </tr>
+
+            </table>
+
+        </form>
+    </div>
+
+
+
+    <script th:inline="javascript">
+        // f5키 사용 불가
+        function notReload(event) {
+            if ((event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) || event.keyCode === 116) {
+                event.preventDefault();
+                event.stopPropagation();
+                alert("새로고침키를 사용할 수 없습니다.");
+            }
+        }
+        document.addEventListener('keydown', notReload);
+
+        // 첨부파일 삭제 시
+        document.getElementById("delattach").addEventListener("click", function(){
+            if (confirm("첨부파일을 삭제하시겠습니까?")) {
+                let alreadyExistFile = this.closest("span");
+                alreadyExistFile.remove();
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

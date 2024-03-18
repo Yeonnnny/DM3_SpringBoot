@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+
+    <!-- css 설정 -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img th:src="@{/img/logo.png}" alt="">
+            <!-- <img src="../static/img/logo.png" alt=""> -->
+            <h2>회원 전용 게시판</h2>
+        </div>
+
+        <div class="gnb">
+            <ul>
+                <!-- 인증이 되지 않은 사람 -->
+                <li><a th:href="@{/}">회원가입</a> </li>
+                <li><a th:href="@{/}">로그인</a> </li>
+
+                <!-- 인증이 된 사람 -->
+                <li><a th:href="@{/}">로그아웃</a> </li>
+
+                <!-- 인증과 관계없음 -->
+                <li><a th:href="@{/board/boardList}">게시판</a> </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

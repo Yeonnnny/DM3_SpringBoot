@@ -1,0 +1,10 @@
+h2{
+    background-color: black;
+    color: white;
+}
+
+p{
+    color: blue;
+    font-weight: bolder;
+    font-family: 'Times New Roman', Times, serif;
+}
