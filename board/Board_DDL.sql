@@ -44,9 +44,19 @@ ALTER TABLE board RENAME COLUMN savedFileName TO saved_file_name;
 select * from board;
 
 -- 3) 댓글 테이블
+drop table reply;
+drop sequence reply_seq;
 create table reply(
-
+    reply_num number primary key, -- 댓글 번호
+    board_num number references board(board_num) on delete cascade, --게시글 번호
+    reply_writer varchar2(20), -- 댓글 작성자
+    reply_text varchar2(1000), -- 댓글 내용
+    create_date date default sysdate -- 댓글 작성일
 );
+
+create sequence reply_seq;
+
+select * from reply;
 
 
 
