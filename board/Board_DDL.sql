@@ -51,7 +51,8 @@ create table reply(
     board_num number references board(board_num) on delete cascade, --게시글 번호
     reply_writer varchar2(20), -- 댓글 작성자
     reply_text varchar2(1000), -- 댓글 내용
-    create_date date default sysdate -- 댓글 작성일
+    create_date date default sysdate, -- 댓글 작성일
+    favorite number -- 댓글 좋아요(공감)
 );
 
 create sequence reply_seq;
