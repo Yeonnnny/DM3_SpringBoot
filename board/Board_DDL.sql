@@ -52,7 +52,7 @@ create table reply(
     reply_writer varchar2(20), -- 댓글 작성자
     reply_text varchar2(1000), -- 댓글 내용
     create_date date default sysdate, -- 댓글 작성일
-    favorite number -- 댓글 좋아요(공감)
+    favorite number default 0-- 댓글 좋아요(공감)
 );
 
 create sequence reply_seq;

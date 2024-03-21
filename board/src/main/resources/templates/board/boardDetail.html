@@ -8,6 +8,43 @@
 
     <!-- css 설정 -->
     <link rel="stylesheet" th:href="@{/css/detail.css}">
+
+    <!-- JQuery 설정 -->
+    <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+    <script>
+        $(function(){
+            $("#replyBtn").on("click", replyWrite);
+            init();
+        })
+        // 모든 댓글 내용을 읽어오는 함수
+        function init() {
+            
+        }
+        // 댓글을 등록하는 함수
+        function replyWrite() {
+            let replyText = $("#replyText").val();
+            let boardNum = $("#boardNum").val();
+            let contextPath = $("#contextPath").val();
+            
+            if(replyText.trim().length ==0){
+                alert("댓글 내용을 입력하세요");
+                $("#replyText").focus();
+                return;
+            }
+
+            let sendData = {"replyWriter":"손오공", "replyText":replyText, "boardNum": boardNum}
+            
+            $.ajax({
+                url:contextPath+"/reply/replyInsert",
+                method:"POST",
+                data: sendData,
+                success:function(resp){
+                    // 저장이 되면 할 예정
+                }
+            })
+        }
+    </script>
+
 </head>
 
 <body>
@@ -20,6 +57,10 @@
 
     <!-- 글보기 -->
     <div class="content">
+
+        <input type="hidden" id="boardNum" th:value="${board.boardNum}">    
+        <input type="hidden" id="contextPath" th:value="${contextPath}">
+
         <table border="1">
             <tr>
                 <th>작성자</th>
@@ -67,7 +108,19 @@
                 </th>
             </tr>
         </table>
+        
+        <!-- 댓글 입력 부분 : 로그인한 사람만 가능 -->
+        <div class="reply-write">
+            <input type="text" id="replyText" placeholder="댓글 내용 입력">
+            <input type="button" id="replyBtn" class="btn-info btn" value="댓글작성">
+        </div>
+
+        <!-- 댓글 목록 출력 부분 -->
+        <div id="reply-list">
+        </div>
+    
     </div> <!--.content 끝-->
+
 
 
 
