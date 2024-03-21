@@ -1,14 +1,21 @@
 package net.kdigital.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -65,8 +72,20 @@ public class BoardEntity {
     @Column(name="saved_file_name")
     private String savedFileName; // 하드디스크에 저장될 파일
 
+    /**
+     * REPLY와의 관계 설정
+     * mappedBy : one에 해당하는 테이블 엔티티
+     * CascadeType.REMOVE 이 값으로 on delete cascade 설정
+     * fetch : LAZY는 지연 호출, EAGER: 즉시 호출
+     */
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("reply_num desc")
+    @JoinColumn(name = "board_num")
+    private List<ReplyEntity> replyEntity = new ArrayList<>();
+
+
     // DTO를 받아서 Entity로 반환
-    public static BoardEntity toEntity(BoardDTO boardDTO) {
+    public static BoardEntity toEntity(BoardDTO boardDTO, List<ReplyEntity> replyEntity) {
         return BoardEntity.builder()
                 .boardNum(boardDTO.getBoardNum())
                 .boardWriter(boardDTO.getBoardWriter())
@@ -76,6 +95,7 @@ public class BoardEntity {
                 .favoriteCount(boardDTO.getFavoriteCount())
                 .originalFileName(boardDTO.getOriginalFileName())
                 .savedFileName(boardDTO.getSavedFileName())
+                .replyEntity(replyEntity)
                 .build();
     }
 
