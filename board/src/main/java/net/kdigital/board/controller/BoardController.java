@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.BoardDTO;
@@ -114,17 +115,22 @@ public class BoardController {
     public String boardDetail(@RequestParam(name = "boardNum") Long boardNum,
                                 @RequestParam(name="searchItem") String searchItem,
                                 @RequestParam(name="searchWord") String searchWord,
+                                HttpServletRequest request,
                                 Model model) {
 
         BoardDTO boardDTO = boardService.selectOne(boardNum);
+        String contextPath = request.getContextPath();
+        System.out.println("============="+contextPath);
+        
         // 조회수 증가
         boardService.incrementHitCount(boardNum);
-        
-        log.info("{}", boardDTO.toString());
         
         model.addAttribute("board", boardDTO);
         model.addAttribute("searchItem", searchItem);
         model.addAttribute("searchWord", searchWord);
+        // contextPath 보내기
+        model.addAttribute("contextPath", contextPath); // 원래 thymeleaf로 @{요청}하면 알아서 contextPath를 붙여주는데 JQuery에선 적용이 안되므로 contextPath를 따로 보내줘야 함
+        
         return "board/boardDetail";
     }
 
@@ -172,7 +178,7 @@ public class BoardController {
 
     /**
      * 변경된 boardDTO를 DB에 적용시키기 위한 수정작업 요청
-     * @param boardDTO
+     * @param boardDTO 
      * @param rttr
      * @return
      */
@@ -182,7 +188,6 @@ public class BoardController {
                                 @RequestParam(name = "searchWord") String searchWord, 
                                 RedirectAttributes rttr) {
         
-        log.info("************{}",boardDTO.toString());
         boardService.updateOne(boardDTO);
 
         rttr.addAttribute("boardNum", boardDTO.getBoardNum());

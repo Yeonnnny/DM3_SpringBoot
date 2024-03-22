@@ -13,7 +13,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
@@ -74,18 +73,17 @@ public class BoardEntity {
 
     /**
      * REPLY와의 관계 설정
-     * mappedBy : one에 해당하는 테이블 엔티티
+     * mappedBy : one에 해당하는 테이블 엔티티 
      * CascadeType.REMOVE 이 값으로 on delete cascade 설정
      * fetch : LAZY는 지연 호출, EAGER: 즉시 호출
      */
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("reply_num desc")
-    @JoinColumn(name = "board_num")
-    private List<ReplyEntity> replyEntity = new ArrayList<>();
+    private List<ReplyEntity> replyEntity = new ArrayList<>(); // 생성자에 넣어주지않아도 됨. JQuery에서 알아서 자식을 끌어 옴
 
 
     // DTO를 받아서 Entity로 반환
-    public static BoardEntity toEntity(BoardDTO boardDTO, List<ReplyEntity> replyEntity) {
+    public static BoardEntity toEntity(BoardDTO boardDTO) {
         return BoardEntity.builder()
                 .boardNum(boardDTO.getBoardNum())
                 .boardWriter(boardDTO.getBoardWriter())
@@ -95,7 +93,6 @@ public class BoardEntity {
                 .favoriteCount(boardDTO.getFavoriteCount())
                 .originalFileName(boardDTO.getOriginalFileName())
                 .savedFileName(boardDTO.getSavedFileName())
-                .replyEntity(replyEntity)
                 .build();
     }
 

@@ -14,7 +14,7 @@
     <script>
         $(function(){
             $("#replyBtn").on("click", replyWrite);
-            init();
+            // init();
         })
         // 모든 댓글 내용을 읽어오는 함수
         function init() {
@@ -34,12 +34,35 @@
 
             let sendData = {"replyWriter":"손오공", "replyText":replyText, "boardNum": boardNum}
             
+            console.log(JSON.stringify(sendData)); 
+
             $.ajax({
                 url:contextPath+"/reply/replyInsert",
                 method:"POST",
                 data: sendData,
                 success:function(resp){
-                    // 저장이 되면 할 예정
+                    let replyNum = resp["replyNum"];
+                    let replyWriter = resp["replyWriter"];
+                    let replyText = resp["replyText"];
+                    let createDate = resp["createDate"];
+
+                    let data = `<table>
+                                    <tr>
+                                        <th>댓글번호</th>
+                                        <th>작성자</th>
+                                        <th>댓글내용</th>
+                                        <th>작성일</th>
+                                    </tr>
+                                    <tr>
+                                        <td>${replyNum}</td>
+                                        <td>${replyWriter}</td>
+                                        <td>${replyText}</td>
+                                        <td>${createDate}</td>
+                                    </tr>
+                                </table>`;
+
+                    $("#reply-list").html(data);
+                    
                 }
             })
         }
@@ -117,6 +140,7 @@
 
         <!-- 댓글 목록 출력 부분 -->
         <div id="reply-list">
+
         </div>
     
     </div> <!--.content 끝-->

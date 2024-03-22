@@ -3,7 +3,6 @@ package net.kdigital.board.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.Reference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,7 +59,7 @@ public class ReplyEntity {
      * 부모가 객체로 선언이 되어 있어야 하고, 관계를 맺을 때 @ManyToOne로 설정해야 함
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_num")
+    @JoinColumn(name = "board_num") // 테이블에 저장된 컬럼명 (FK)
     private BoardEntity boardEntity;
 
     public static ReplyEntity toEntity (ReplyDTO replyDTO, BoardEntity boardEntity){
