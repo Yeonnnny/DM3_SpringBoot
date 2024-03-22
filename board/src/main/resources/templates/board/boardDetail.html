@@ -12,13 +12,48 @@
     <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
     <script>
         $(function(){
+            $("#boardLikeBtn").on("click",increaseBoardFavorite);
             $("#replyBtn").on("click", replyWrite);
             init();
         })
+
+        // 게시글 좋아요
+        function increaseBoardFavorite() {
+            let me = $(this);
+            let boardNum = $("#boardNum").val();
+            let contextPath = $("#contextPath").val();
+
+            // 클릭 여부
+            let isClicked = $(this).attr("data-click");
+            let count = 0;
+
+            if (isClicked == "false") { // 좋아요를 줬을 경우
+                count = 1;
+                me.attr('data-click', 'true');
+            } else { // 좋아요 취소한 경우
+                count = -1;
+                me.attr('data-click', 'false');
+            }
+
+            $.ajax({
+                url: contextPath + "/board/incrementFavoriteCount",
+                method: "GET",
+                data: {"boardNum": boardNum, "count": count},
+                success: function (resp) {
+                    $("#boardLikeCount").html(resp);
+                }
+            })
+        }
+
         // 모든 댓글 내용을 읽어오는 함수
         function init() {
             let contextPath = $("#contextPath").val();
             let boardNum = $("#boardNum").val();
+
+            // 게시글 좋아요 값 설정
+            let boardFavoriteCount = $("#boardFavoriteCount").val();
+            $("#boardLikeCount").html(boardFavoriteCount);
+
             $.ajax({
                 url:contextPath+"/reply/replyAll",
                 method:"GET",
@@ -104,6 +139,7 @@
             })
         }
 
+        // 댓글 삭제
         function deleteReply() {
             if(!confirm("정말 삭제하시겠습니까?")){
                 return;
@@ -123,11 +159,12 @@
             })
         }
         
+        // 댓글 수정
         function updateReply() {
             let replynum = $(this).attr("data-no");
         }
 
-
+        // 댓글 좋아요
         function likeReply() {
             let me = $(this); 
             let replyNum = $(this).attr("data-no");
@@ -149,7 +186,7 @@
             }
 
             $.ajax({
-                url: contextPath + "/reply/incrementLike",
+                url: contextPath + "/reply/incrementFavorite",
                 method: "GET",
                 data: { "replyNum": replyNum, "count": count},
                 success: function (resp) {
@@ -158,9 +195,6 @@
                     me.val(new_val);
                 }
             })
-            
-
-
         }
 
     </script>
@@ -179,8 +213,13 @@
     <div class="content">
 
         <input type="hidden" id="boardNum" th:value="${board.boardNum}">    
+        <input type="hidden" id="boardFavoriteCount" th:value="${board.favoriteCount}">
         <input type="hidden" id="contextPath" th:value="${contextPath}">
-        <input type="hidden" id="contextPath" th:value="${contextPath}">
+        
+        <div class="like">
+            <img th:src="@{/img/like.png}" id="boardLikeBtn" alt="좋아요" data-click="false">
+            <span id="boardLikeCount"></span>
+        </div>
 
         <table border="1">
             <tr>

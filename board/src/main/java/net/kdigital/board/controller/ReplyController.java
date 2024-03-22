@@ -49,11 +49,11 @@ public class ReplyController {
         return replyService.delete(replyNum);
     }
 
-    @GetMapping("/incrementLike")
+    @GetMapping("/incrementFavorite")
     @ResponseBody
-    public int incrementLike(@RequestParam(name = "replyNum") Long replyNum,
+    public int incrementFavorite(@RequestParam(name = "replyNum") Long replyNum,
                             @RequestParam(name="count") int count) {
-        int like = replyService.incrementLike(replyNum,count);
+        int like = replyService.incrementFavorite(replyNum,count);
         return like;
     }
     

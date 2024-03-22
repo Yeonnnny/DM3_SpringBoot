@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.ServletOutputStream;
@@ -132,7 +133,7 @@ public class BoardController {
         
         return "board/boardDetail";
     }
-
+ 
 
     /**
      * boardNum에 해당하는 글 삭제
@@ -245,6 +246,15 @@ public class BoardController {
 
         return null;
     }
+
+    @GetMapping("/incrementFavoriteCount")
+    @ResponseBody
+    public int incrementFavoriteCount(@RequestParam(name = "boardNum") Long boardNum,
+                                        @RequestParam(name = "count") int count) {
+        int like = boardService.incrementFavoriteCount(boardNum,count);
+        return like;
+    }
+    
 
 
 

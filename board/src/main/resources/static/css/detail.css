@@ -21,6 +21,29 @@ div.content td textarea {
 
 }
 
+/* 게시글 좋아요 */
+div.like{
+    width: 1100px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+div.like>#boardLikeBtn{
+    width: 37px;
+    padding-right: 5px;
+}
+
+div.like>#boardLikeBtn:hover{
+    cursor: pointer;
+}
+
+div.like>#boardLikeCount{
+    width: 30px;
+    font-weight: bold;
+}
+
 /****************************
     글보기 화면
 ****************************/
@@ -70,7 +93,3 @@ input#replyText{
 }
 
 
-/* 좋아요 버튼 */
-/* .input-wrapper{
-    display: inline-block;
-} */

@@ -78,7 +78,7 @@ public class ReplyService {
      * @return
      */
     @Transactional
-    public int incrementLike(Long replyNum, int count) {
+    public int incrementFavorite(Long replyNum, int count) {
         Optional<ReplyEntity> entity =  replyRepository.findById(replyNum);
         if (entity.isPresent()) {
             ReplyEntity replyEntity = entity.get();

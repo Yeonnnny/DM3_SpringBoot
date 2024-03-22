@@ -225,15 +225,17 @@ public class BoardService {
     /**
      * 좋아요 증가
      * @param boardNum
+     * @return 
      */
     @Transactional
-    public void incrementFavoriteCount(Long boardNum){
+    public int incrementFavoriteCount(Long boardNum, int count){
         Optional<BoardEntity> entity = boardRepository.findById(boardNum);
         if (entity.isPresent()) {
             BoardEntity boardEntity = entity.get();
-            boardEntity.setFavoriteCount(boardEntity.getFavoriteCount()+1);
-
+            boardEntity.setFavoriteCount(boardEntity.getFavoriteCount()+count);
+            return boardEntity.getFavoriteCount();
         }
+        return 0;
     }
 
 }
