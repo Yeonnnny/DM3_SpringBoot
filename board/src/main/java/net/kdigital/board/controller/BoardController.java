@@ -120,7 +120,6 @@ public class BoardController {
 
         BoardDTO boardDTO = boardService.selectOne(boardNum);
         String contextPath = request.getContextPath();
-        System.out.println("============="+contextPath);
         
         // 조회수 증가
         boardService.incrementHitCount(boardNum);

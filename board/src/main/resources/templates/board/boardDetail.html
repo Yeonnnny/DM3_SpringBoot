@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://thymeleaf.org">
 
 <head>
@@ -14,12 +13,50 @@
     <script>
         $(function(){
             $("#replyBtn").on("click", replyWrite);
-            // init();
+            init();
         })
         // 모든 댓글 내용을 읽어오는 함수
         function init() {
-            
+            let contextPath = $("#contextPath").val();
+            let boardNum = $("#boardNum").val();
+            $.ajax({
+                url:contextPath+"/reply/replyAll",
+                method:"GET",
+                data : {"boardNum":boardNum},
+                success:output
+            })
         }
+
+        function output(resp) {
+            console.log("전체출력");
+            console.log(resp);
+            let result = "";
+
+            $.each(resp,function (index, item){
+                let replyNum = item["replyNum"];
+                let replyWriter = item["replyWriter"];
+                let replyText = item["replyText"];
+                let createDate = item["createDate"];
+                let favorite = item["favorite"];
+                
+                result +=   `<tr>
+                                <td>${replyNum}</td>
+                                <td>${replyWriter}</td>
+                                <td>${replyText}</td>
+                                <td>${createDate}</td>
+                                <td>
+                                    <input type="button" class="likeBtn" value="♡ ${favorite}" data-no="${replyNum}" data-click="false">
+                                    <input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
+                                    <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">
+                                </td>
+                            </tr>`;
+            })
+            $("#target").html(result);
+            $(".delBtn").on("click", deleteReply);
+            $(".updateBtn").on("click", updateReply);
+            $(".likeBtn").on("click", likeReply);
+        }   
+        
         // 댓글을 등록하는 함수
         function replyWrite() {
             let replyText = $("#replyText").val();
@@ -46,26 +83,86 @@
                     let replyText = resp["replyText"];
                     let createDate = resp["createDate"];
 
-                    let data = `<table>
-                                    <tr>
-                                        <th>댓글번호</th>
-                                        <th>작성자</th>
-                                        <th>댓글내용</th>
-                                        <th>작성일</th>
-                                    </tr>
-                                    <tr>
-                                        <td>${replyNum}</td>
-                                        <td>${replyWriter}</td>
-                                        <td>${replyText}</td>
-                                        <td>${createDate}</td>
-                                    </tr>
-                                </table>`;
-
-                    $("#reply-list").html(data);
+                    let data = `<tr>
+                                    <td>${replyNum}</td>
+                                    <td>${replyWriter}</td>
+                                    <td>${replyText}</td>
+                                    <td>${createDate}</td>
+                                    <td>
+                                        <input type="button" class="likeBtn" value="♡ 0" data-no="${replyNum}" data-click="false">
+                                        <input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
+                                        <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">
+                                    </td>
+                                </tr>`;
+                    $("#replyText").val(""); // input 상자 초기화
+                    $("#target").prepend(data);
+                    $(".delBtn").on("click", deleteReply);
+                    $(".updateBtn").on("click", updateReply);
+                    $(".likeBtn").on("click", likeReply);
                     
                 }
             })
         }
+
+        function deleteReply() {
+            if(!confirm("정말 삭제하시겠습니까?")){
+                return;
+            }
+            let me = $(this);
+            let replyNum = $(this).attr("data-no");
+            let contextPath = $("#contextPath").val();
+            $.ajax({
+                url:contextPath+"/reply/replyDelete",
+                method:"GET",
+                data:{"replyNum": replyNum },
+                success:function(resp){
+                    if(resp){
+                        me.parent().parent().remove();
+                    }
+                }
+            })
+        }
+        
+        function updateReply() {
+            let replynum = $(this).attr("data-no");
+        }
+
+
+        function likeReply() {
+            let me = $(this); 
+            let replyNum = $(this).attr("data-no");
+            let contextPath = $("#contextPath").val();
+            
+            // 클릭 여부
+            let isClicked = $(this).attr("data-click");
+            let count=0;
+            let heart="♡";
+            
+            if(isClicked=="false"){ // 좋아요를 줬을 경우
+                count=1;
+                me.attr('data-click', 'true'); 
+                heart="♥";
+            }else{ // 좋아요 취소한 경우
+                count=-1;
+                me.attr('data-click', 'false');
+                heart="♡";
+            }
+
+            $.ajax({
+                url: contextPath + "/reply/incrementLike",
+                method: "GET",
+                data: { "replyNum": replyNum, "count": count},
+                success: function (resp) {
+                    console.log("좋아요DB적용");
+                    let new_val = `${heart} ${resp}`;
+                    me.val(new_val);
+                }
+            })
+            
+
+
+        }
+
     </script>
 
 </head>
@@ -82,6 +179,7 @@
     <div class="content">
 
         <input type="hidden" id="boardNum" th:value="${board.boardNum}">    
+        <input type="hidden" id="contextPath" th:value="${contextPath}">
         <input type="hidden" id="contextPath" th:value="${contextPath}">
 
         <table border="1">
@@ -140,11 +238,22 @@
 
         <!-- 댓글 목록 출력 부분 -->
         <div id="reply-list">
-
+            <table id="target">
+                <tr>
+                    <th>댓글번호</th>
+                    <th>작성자</th>
+                    <th>댓글내용</th>
+                    <th>작성일</th>
+                    <th></th>
+                </tr>
+            </table>
         </div>
     
     </div> <!--.content 끝-->
 
+    
+        
+    
 
 
 
