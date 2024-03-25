@@ -1,6 +1,9 @@
 package net.kdigital.board.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.BoardDTO;
 import net.kdigital.board.entity.BoardEntity;
+import net.kdigital.board.entity.ReplyEntity;
 import net.kdigital.board.repository.BoardRepository;
+import net.kdigital.board.repository.ReplyRepository;
 import net.kdigital.board.util.FileService;
 
 @Slf4j
@@ -25,6 +30,7 @@ import net.kdigital.board.util.FileService;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
 
     // 업로드된 파일이 저장될 디렉토리 경로를 읽어옴
     @Value("${spring.servlet.multipart.location}")
@@ -97,8 +103,7 @@ public class BoardService {
      */
     public void insertBoard(BoardDTO boardDTO) {
         boardDTO.setBoardWriter("김도연");
-        log.info("====== 저장 경로 : {}",uploadPath);
-
+        
         String originalFileName = null;
         String savedFileName=null;
 
@@ -236,6 +241,29 @@ public class BoardService {
             return boardEntity.getFavoriteCount();
         }
         return 0;
+    }
+
+    /**
+     * boardNum에 따른 댓글 수를 Map으로 반환
+     * @return Map<boardNum, (String)댓글 수>
+     */
+    public Map<Long, String> replyCount() {
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        
+        Map<Long,String> replyCount = new HashMap<>();
+        
+        boardEntityList.forEach((entity)->{
+            // boardNum
+            Long boardNum = entity.getBoardNum();
+            // boardNum에 따른 댓글 목록
+            List<ReplyEntity> replyEntityList = replyRepository.findAllByBoardEntityOrderByReplyNumDesc(entity);
+            
+            int replySize = replyEntityList.size();
+
+            replyCount.put(boardNum, replySize+"");
+        });
+
+        return replyCount;
     }
 
 }

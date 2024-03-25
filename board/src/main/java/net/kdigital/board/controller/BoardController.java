@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -58,10 +59,11 @@ public class BoardController {
     @GetMapping("/boardList")
     public String boardList(@PageableDefault(page=1) Pageable pageable, //페이징을 해주는 객체, 요청한 페이지가 없으면 1로 세팅
                             @RequestParam(name="searchItem", defaultValue = "boardTitle")String searchItem,
-                            @RequestParam(name="searchWord", defaultValue = "") String searchWord,                        
+                            @RequestParam(name="searchWord", defaultValue = "") String searchWord,   
                             Model model) {
 
         // List<BoardDTO> list = boardService.selectAll(searchItem,searchWord);
+        // Pagination
         Page<BoardDTO> list = boardService.selectAll(pageable, searchItem, searchWord);
         
         int totalPages = (int)list.getTotalPages();
@@ -69,8 +71,14 @@ public class BoardController {
 
         PageNavigator  navi = new PageNavigator(pageLimit, page, totalPages);
 
+        // 댓글 수
+        Map<Long, String> replyCount = boardService.replyCount();
+    
+        log.info("{}",replyCount);
+        log.info("{}",replyCount.get(125L));
 
         model.addAttribute("list", list);
+        model.addAttribute("replyCount", replyCount);
         model.addAttribute("searchItem", searchItem);
         model.addAttribute("searchWord", searchWord);
         model.addAttribute("navi", navi);
