@@ -112,7 +112,7 @@ board(1) : reply(n)
 
 Security 시 필요한 클래스 생성
 
-DTO : UserDetails 구현
+DTO : LoginUserDetails 구현 (implements UserDetails)
 Service : UserDetailsService 구현
 
 

@@ -12,8 +12,6 @@ import net.kdigital.board.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +37,12 @@ public class UserController {
     @PostMapping("/joinProc")
     public String joinProc(@ModelAttribute UserDTO userDTO) {
         log.info("{}",userDTO.toString());
-        userService.insertUser(userDTO);
+
+        // 롤, 계정 활성화 여부 세팅
+        userDTO.setRoles("ROLE_USER");
+        userDTO.setEnabled(true);
+
+        userService.joinProc(userDTO);
         
         return "redirect:/";
     }
