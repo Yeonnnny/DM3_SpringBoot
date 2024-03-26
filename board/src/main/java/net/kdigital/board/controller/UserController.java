@@ -1,6 +1,7 @@
 package net.kdigital.board.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -11,6 +12,7 @@ import net.kdigital.board.service.UserService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -52,7 +54,13 @@ public class UserController {
      * @return
      */
     @GetMapping("/login")
-    public String login() {
+    public String login(
+        @RequestParam(value = "error", required =false) String error,
+        @RequestParam(value = "errMessage", required = false) String errMessage,
+        Model model
+    ) {
+        model.addAttribute("error", error);
+        model.addAttribute("errMessage", errMessage);
         return "user/login";
     }
 

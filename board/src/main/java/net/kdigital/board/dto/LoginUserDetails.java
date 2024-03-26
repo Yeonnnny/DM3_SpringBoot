@@ -1,6 +1,7 @@
 package net.kdigital.board.dto;
 
 import java.util.Collection;
+import java.util.ArrayList;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.ToString;
 
 @ToString
-public class LoginUserDetails implements UserDetails {
+public class LoginUserDetails implements UserDetails { 
+    private static final long serialVersionUID = 1L; // 외부의 역직렬화한 데이터와 같은지 비교해야 하는데 그때 시리얼 번호가 있어야 함
     private String userId;
     private String userName;
     private String userPwd;
@@ -29,8 +31,16 @@ public class LoginUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        return null;
+        // 굳이 list로 하는 이유 : role이 여러 개인 경우 테이블(roles)을 따로 만들어서 사용하는데, 이를 관리하기 위한 목적임 
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+        collection.add(new GrantedAuthority() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public String getAuthority() {
+                return roles;
+            }  
+        });
+        return collection;
     }
     
     @Override

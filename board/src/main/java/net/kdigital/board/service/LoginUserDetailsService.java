@@ -27,15 +27,13 @@ public class LoginUserDetailsService implements UserDetailsService{
         // 사용자가 로그인을 하면 SecurityConfig가 username을 여기로 전달함
         log.info("UserId : {}", userId);
 
-        Optional<UserEntity> userEntity = userRepository.findById(userId);
-        if (userEntity.isPresent()) {
-            UserEntity entity = userEntity.get(); 
-            UserDTO userDTO = UserDTO.toDTO(entity);
-            // 반환을 UserDetails 로 반환해야 하므로 UserDTO를 UserDetails로 바꿔야 함
-            return new LoginUserDetails(userDTO);
-        }
-        // 저장된 유저정보가 없을 때
-        return null;
+        UserEntity userEntity = userRepository.findById(userId)
+                                                .orElseThrow(()->{
+                                                    throw new UsernameNotFoundException("error 발생");
+                                                });
+        UserDTO userDTO = UserDTO.toDTO(userEntity);
+        // 반환을 UserDetails 로 반환해야 하므로 UserDTO를 UserDetails로 바꿔야 함
+        return new LoginUserDetails(userDTO);
     }
     
 }

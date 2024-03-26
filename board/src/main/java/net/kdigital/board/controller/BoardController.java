@@ -74,8 +74,8 @@ public class BoardController {
         // 댓글 수
         Map<Long, String> replyCount = boardService.replyCount();
     
-        log.info("{}",replyCount);
-        log.info("{}",replyCount.get(125L));
+        // log.info("{}",replyCount);
+        // log.info("{}",replyCount.get(125L));
 
         model.addAttribute("list", list);
         model.addAttribute("replyCount", replyCount);
