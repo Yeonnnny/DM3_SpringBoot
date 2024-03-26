@@ -13,6 +13,7 @@ import net.kdigital.board.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
@@ -63,5 +64,15 @@ public class UserController {
         model.addAttribute("errMessage", errMessage);
         return "user/login";
     }
+
+    @GetMapping("/confirmId")
+    @ResponseBody
+    public UserDTO confirmId(@RequestParam(name = "userId") String userId) {
+        log.info("------------ userId : {}",userId);
+        UserDTO dto = userService.confirmId(userId);
+        log.info("------------ dto : {}",dto);
+        return dto;
+    }
+    
 
 }

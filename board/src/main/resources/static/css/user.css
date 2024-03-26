@@ -43,6 +43,11 @@
     border: inherit;
 }
 
+/* 아이디 확인 문구 */
+.section>.article>ul>li>#confirmID {
+    margin-left: 40px;
+}
+
 .btns {
     text-align: center;
 }
@@ -53,3 +58,6 @@
         rgba(78, 197, 217, 1) 0%,
         rgba(38, 59, 151, 1) 100%);
 }
+
+
+

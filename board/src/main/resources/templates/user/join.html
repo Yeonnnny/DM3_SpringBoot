@@ -10,7 +10,45 @@
     
     <!-- CSS 설정 -->
     <link rel="stylesheet" th:href="@{/css/user.css}">
+    
+    <!-- JQuery 설정 -->
+    <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+    <script>
+        $(function(){
+            $("#userId").on('keyup',confirm);
+        })
 
+        function confirm() {
+            let userId = $(this).val();
+
+            if (userId.trim().length <3 || userId.trim().length>5) {
+                $("#confirmID").css("color","red");
+                $("#confirmID").html("길이는 3~5글자 사이");
+                return;
+            }
+            $.ajax({
+                url:"/user/confirmId",
+                method:"GET",
+                async:false, // 비동기 통신 -> 동기 통신으로 : 응답이 오기 전에 밑에 코드를 진행할 수도 있기 때문에 막아줌
+                data:{"userId":userId},
+                success:function(resp){
+                    if (!resp) {
+                        $("#confirmID").css("color", "blue");
+                        $("#confirmID").html("사용가능한 아이디");
+                        $("#submitBtn").attr("disabled",false);
+                    }else{
+                        $("#confirmID").css("color", "red");
+                        $("#confirmID").html("사용중인 아이디");
+                    }
+                }
+            })
+            
+
+
+        }
+
+
+    </script>
 
 </head>
 <body>
@@ -30,7 +68,9 @@
                         <li>
                             <i class="fa-solid fa-fingerprint"></i>
                             <input type="text" name="userId" id="userId" placeholder="ID">
+                            <span id="confirmID" style="font-size: 0.7em;"></span>
                         </li>
+                        
                         <li>
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" name="userPwd" id="userPwd" placeholder="Password">
@@ -47,7 +87,7 @@
 
                     <div class="btns">
                         <input type="reset" id="resetBtn" value="초기화" class="btn btn-secondary">
-                        <input type="submit" id="submitBtn" value="회원가입" class="btn btn-primary">
+                        <input type="submit" id="submitBtn" value="회원가입" class="btn btn-primary" disabled>
                     </div>
 
                 </div>

@@ -1,9 +1,12 @@
 package net.kdigital.board.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.UserDTO;
 import net.kdigital.board.entity.UserEntity;
 import net.kdigital.board.repository.UserRepository;
@@ -33,5 +36,21 @@ public class UserService {
         userRepository.save(entity);
 
         return true;  // 가입 성공
+    }
+
+    /**
+     * 전달받은 아이디가 DB에 존재하는지 확인하고 존재하면 true, 존재하지 않으면 false반환하는 함수
+     * @param userId
+     * @return
+     */ 
+    public UserDTO confirmId(String userId) {
+        Optional<UserEntity> entity = userRepository.findById(userId);
+
+        if(entity.isPresent()){
+            UserEntity userEntity = entity.get();
+            return UserDTO.toDTO(userEntity);
+        }
+
+        return null;
     }
 }

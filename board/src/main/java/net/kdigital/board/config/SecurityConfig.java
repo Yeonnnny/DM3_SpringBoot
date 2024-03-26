@@ -25,6 +25,7 @@ public class SecurityConfig {
                                     "/board/boardList",
                                     "/board/boardDetail",
                                     "/user/join",
+                                    "/user/confirmId",
                                     "/user/joinProc",
                                     "/user/login",
                                     "/reply/replyAll",
