@@ -116,6 +116,16 @@ DTO : LoginUserDetails 구현 (implements UserDetails)
 Service : UserDetailsService 구현
 
 
+# [Session]
+이동한 페이지로 JSESSIONID를 넘김-> user의 활동(로그인 정보)을 추적할 수 있음 
 
+http의 특징 : stateless 
+
+- 세션? 사이트 방문하는 동안에는 유효한 키
+- 객체로서 관리하고 싶으면 메모리에 저장
+- 로그아웃 시에 세션 삭제
+
+세선 : 로그인해서 그 페이지에 있는 동안의 정보를 저장해놓는 곳
+쿠키 : 한번이라도 사이트에 들어가면 페이지에서 사용자의 로컬에 저장해놓는 곳
 
 

@@ -50,7 +50,7 @@ public class LoginUserDetails implements UserDetails {
     
     @Override
     public String getUsername() {  // Security에서 username은 id를 말함
-        return this.userId;
+        return this.userName;
     }
     
     @Override
