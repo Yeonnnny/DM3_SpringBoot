@@ -11,7 +11,7 @@
 </head>
 
 <body>
-
+    <input type="hidden" id="loginUserName" th:value="${loginUserName}">
     <div class="container">
         <div class="logo">
             <img th:src="@{/img/logo.png}" alt="">
@@ -26,7 +26,8 @@
                 <li sec:authorize="isAnonymous()"><a th:href="@{/user/login}">로그인</a> </li>
 
                 <!-- 인증이 된 사람 -->
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">[[${#authentication.name}]]님, 로그아웃</a> </li>
+                <!-- <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">[[${#authentication.name}]]님, 로그아웃</a> </li> --> <!--로그인 아이디로-->
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">[[${loginUserName}]]님, 로그아웃</a> </li> <!--로그인 이름으로-->
 
                 <!-- 인증과 관계없음 -->
                 <li><a th:href="@{/board/boardList}">게시판</a> </li>

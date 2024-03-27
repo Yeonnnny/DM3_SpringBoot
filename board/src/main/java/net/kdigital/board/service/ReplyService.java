@@ -88,6 +88,28 @@ public class ReplyService {
         }
         return 0;
     }
+
+    public ReplyDTO selectOne(Long replyNum) {
+        Optional<ReplyEntity> entity= replyRepository.findById(replyNum);
+
+        if (entity.isPresent()) {
+            ReplyEntity replyEntity = entity.get();
+            return ReplyDTO.toDTO(replyEntity, replyNum);
+        }
+        return null;
+    } 
+
+    @Transactional
+    public boolean update(Long replyNum, String replyText) {
+        Optional<ReplyEntity> entity = replyRepository.findById(replyNum);
+
+        if (entity.isPresent()) {
+            ReplyEntity replyEntity = entity.get();
+            replyEntity.setReplyText(replyText);
+            return true;
+        }
+        return false;
+    }
     
 
 }

@@ -45,6 +45,7 @@ alter table board add savedFileName varchar2(200);
 ALTER TABLE board RENAME COLUMN originalFileName TO original_file_name;
 ALTER TABLE board RENAME COLUMN savedFileName TO saved_file_name;
 
+
 select * from board;
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://thymeleaf.org">
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 작성 화면</title>
@@ -24,7 +24,7 @@
             <table border="1">
                 <tr>
                     <th>작성자</th>
-                    <td><input id="boardWriter" type="text" name="boardWriter" readonly></td>
+                    <td><input id="boardWriter" type="text" name="boardWriter" th:value="${#authentication.name}" readonly></td>
                 </tr>
                 <tr>
                     <th>글제목</th>

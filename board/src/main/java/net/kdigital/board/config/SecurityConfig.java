@@ -15,7 +15,7 @@ import net.kdigital.board.handler.CustomFailureHandler;
 @RequiredArgsConstructor
 public class SecurityConfig {
     
-    private final CustomFailureHandler failureHandler; // 오류 시 던져받음 (ㅇ얘가 핸들링할 거다를 알려줌)
+    private final CustomFailureHandler failureHandler; // 오류 시 던져받음 (얘가 핸들링할거다를 알려줌)
 
     @Bean // Stpring Container가 생성 및 메모리 삭제까지 관리하는 객체 
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -55,11 +55,10 @@ public class SecurityConfig {
         // security는 사이트 위변조 기능이 설정되어 있기 때문에 모든 POST 요청 시 
         // CSRF 토큰도 보내야함
         // 그러므로 개발하는 동안에는 disabled 해줌 (POST, PUT, DELETE (DB와 관련된 명령어임)진행되지 않음)
-        http.csrf((auth)->auth.disable()); // 배포 시 활성화 꼭 해줘야 함
+        http.csrf((auth)->auth.disable()); // 배포 시 활성화 해줘야 함
 
         return http.build();
     }
-
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder(){

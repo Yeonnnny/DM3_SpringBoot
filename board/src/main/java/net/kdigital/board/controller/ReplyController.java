@@ -42,10 +42,42 @@ public class ReplyController {
         return replyList;
     }
 
-    @GetMapping("/replyDelete")
+    @GetMapping("/replyDelete") 
     @ResponseBody
     public boolean replyDelete(@RequestParam(name = "replyNum")Long replyNum){
         return replyService.delete(replyNum);
+    }
+
+
+    /**
+     * 전달받은 repluNum에 해당하는 ReplyDTO 반환하는 함수 
+     * @param replyNum
+     * @return
+     */
+    @GetMapping("/replySelect")
+    @ResponseBody
+    public ReplyDTO replySelect(@RequestParam(name = "replyNum")Long replyNum){
+        return replyService.selectOne(replyNum);
+    }
+
+
+    /**
+     * 
+     * @param replyNum
+     * @param replyText
+     * @param boardNum
+     * @return
+     */
+    @GetMapping("/replyUpdate")
+    @ResponseBody
+    public List<ReplyDTO> replyUpdate(@RequestParam(name = "replyNum")Long replyNum,
+                                @RequestParam(name = "replyText")String replyText,
+                                @RequestParam(name="boardNum")Long boardNum) {
+        if(replyService.update(replyNum,replyText)){
+            List<ReplyDTO> replyList = replyService.replyAll(boardNum);
+            return replyList;
+        }
+        return null;
     }
 
     @GetMapping("/incrementFavorite")

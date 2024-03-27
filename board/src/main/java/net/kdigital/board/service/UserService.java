@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.UserDTO;
 import net.kdigital.board.entity.UserEntity;
 import net.kdigital.board.repository.UserRepository;

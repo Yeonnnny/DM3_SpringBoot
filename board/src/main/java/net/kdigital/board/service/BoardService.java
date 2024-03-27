@@ -1,5 +1,5 @@
 package net.kdigital.board.service;
-
+ 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,6 @@ import net.kdigital.board.repository.BoardRepository;
 import net.kdigital.board.repository.ReplyRepository;
 import net.kdigital.board.util.FileService;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -102,8 +101,6 @@ public class BoardService {
      * @param boardDTO
      */
     public void insertBoard(BoardDTO boardDTO) {
-        boardDTO.setBoardWriter("김도연");
-        
         String originalFileName = null;
         String savedFileName=null;
 
@@ -245,12 +242,12 @@ public class BoardService {
 
     /**
      * boardNum에 따른 댓글 수를 Map으로 반환
-     * @return Map<boardNum, (String)댓글 수>
+     * @return Map<boardNum, (Integer)댓글 수>
      */
-    public Map<Long, String> replyCount() {
+    public Map<Long, Integer> replyCount() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         
-        Map<Long,String> replyCount = new HashMap<>();
+        Map<Long, Integer> replyCount = new HashMap<>();
         
         boardEntityList.forEach((entity)->{
             // boardNum
@@ -260,7 +257,7 @@ public class BoardService {
             
             int replySize = replyEntityList.size();
 
-            replyCount.put(boardNum, replySize+"");
+            replyCount.put(boardNum, replySize);
         });
 
         return replyCount;

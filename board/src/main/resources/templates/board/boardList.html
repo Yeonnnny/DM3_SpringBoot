@@ -9,6 +9,10 @@
     <!-- css 설정 -->
     <link rel="stylesheet" th:href="@{/css/list.css}">
 
+    <!-- JQuery 설정 -->
+    <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+
+
 </head>
 
 <body>
@@ -48,7 +52,7 @@
         <!-- 게시글 목록 -->
         <div>
             <!-- list.number : [[${list.number}]] / list.size : [[${list.size}]] -->
-            <table>
+            <table> 
                 <tr>
                     <th class="no">글번호</th>
                     <th>제목</th>
@@ -66,7 +70,8 @@
                     <td th:text="${(list.number+1)*list.size - (list.size-status.count)}"></td>
                     <td><a th:href="@{/board/boardDetail(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" th:text="${board.boardTitle}"></a>
                         <!-- 댓글 수 -->
-                        (<span th:value="${replyCount.get(__${board.boardNum}__)}"></span>)
+                        <input type="hidden" id="boardNumForReply" th:val="${board.boardNum}">
+                        <span id="replyCount"></span>
                         <!-- 첨부파일 여부 -->
                         <span th:if="${board.originalFileName}!=null">
                             <img th:src="@{/img/clip.png}" alt="첨부파일" width="17px">

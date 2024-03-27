@@ -1,4 +1,8 @@
-<html lang="ko" xmlns:th="http://thymeleaf.org">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- thymeleaf 해석 : 서버에서 함 -->
+<!-- JQuery 해석 : 웹브라우저에서 함 -->
 
 <head>
     <meta charset="UTF-8">
@@ -6,7 +10,7 @@
     <title>게시글 조회</title>
 
     <!-- css 설정 -->
-    <link rel="stylesheet" th:href="@{/css/detail.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}"> 
 
     <!-- JQuery 설정 -->
     <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
@@ -66,25 +70,31 @@
             console.log("전체출력");
             console.log(resp);
             let result = "";
-
+            // 로그인한 아이디 가져오기
+            let loginId = $("#loginId").val();
+            
             $.each(resp,function (index, item){
                 let replyNum = item["replyNum"];
                 let replyWriter = item["replyWriter"];
                 let replyText = item["replyText"];
                 let createDate = item["createDate"];
                 let favorite = item["favorite"];
+                let buttonHtml = ''; // 버튼 HTML을 동적으로 생성
                 
-                result +=   `<tr>
-                                <td>${replyNum}</td>
-                                <td>${replyWriter}</td>
-                                <td>${replyText}</td>
-                                <td>${createDate}</td>
-                                <td>
-                                    <input type="button" class="likeBtn" value="♡ ${favorite}" data-no="${replyNum}" data-click="false">
-                                    <input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
-                                    <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">
-                                </td>
-                            </tr>`;
+                // 만약 댓글 작성자가 로그인한 사용자와 같다면 삭제와 수정 버튼을 생성
+                if (replyWriter === loginId) {
+                    buttonHtml = `<input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
+                                <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">`;
+                }
+                result += `<tr>
+                        <td>${replyWriter}</td>
+                        <td>${replyText}</td>
+                        <td>${createDate}</td>
+                        <td>
+                            <input type="button" class="likeBtn" value="♡ ${favorite}" data-no="${replyNum}" data-click="false">
+                            <span>${buttonHtml}</span>
+                        </td>
+                    </tr>`;
             })
             $("#target").html(result);
             $(".delBtn").on("click", deleteReply);
@@ -94,49 +104,68 @@
         
         // 댓글을 등록하는 함수
         function replyWrite() {
+            // 로그인한 아이디 가져오기
+            let loginId = $("#loginId").val();
             let replyText = $("#replyText").val();
             let boardNum = $("#boardNum").val();
             let contextPath = $("#contextPath").val();
-            
-            if(replyText.trim().length ==0){
-                alert("댓글 내용을 입력하세요");
-                $("#replyText").focus();
-                return;
-            }
+            let btnVal = $(this).val();
 
-            let sendData = {"replyWriter":"손오공", "replyText":replyText, "boardNum": boardNum}
-            
-            console.log(JSON.stringify(sendData)); 
-
-            $.ajax({
-                url:contextPath+"/reply/replyInsert",
-                method:"POST",
-                data: sendData,
-                success:function(resp){
-                    let replyNum = resp["replyNum"];
-                    let replyWriter = resp["replyWriter"];
-                    let replyText = resp["replyText"];
-                    let createDate = resp["createDate"];
-
-                    let data = `<tr>
-                                    <td>${replyNum}</td>
-                                    <td>${replyWriter}</td>
-                                    <td>${replyText}</td>
-                                    <td>${createDate}</td>
-                                    <td>
-                                        <input type="button" class="likeBtn" value="♡ 0" data-no="${replyNum}" data-click="false">
-                                        <input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
-                                        <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">
-                                    </td>
-                                </tr>`;
-                    $("#replyText").val(""); // input 상자 초기화
-                    $("#target").prepend(data);
-                    $(".delBtn").on("click", deleteReply);
-                    $(".updateBtn").on("click", updateReply);
-                    $(".likeBtn").on("click", likeReply);
-                    
+            if(btnVal=="댓글작성"){ // 댓글 작성일 때
+                if(replyText.trim().length ==0){
+                    alert("댓글 내용을 입력하세요");
+                    $("#replyText").focus();
+                    return;
                 }
-            })
+    
+                let sendData = {"replyWriter": loginId, "replyText":replyText, "boardNum": boardNum}
+                
+                console.log(JSON.stringify(sendData)); 
+    
+                $.ajax({
+                    url:contextPath+"/reply/replyInsert",
+                    method:"POST",
+                    data: sendData,
+                    success:function(resp){
+                        let replyNum = resp["replyNum"];
+                        let replyWriter = resp["replyWriter"];
+                        let replyText = resp["replyText"];
+                        let createDate = resp["createDate"];
+                        let data = `<tr>
+                                        <td>${replyWriter}</td>
+                                        <td>${replyText}</td>
+                                        <td>${createDate}</td>
+                                        <td>
+                                            <input type="button" class="likeBtn" value="♡ 0" data-no="${replyNum}" data-click="false">
+                                            <input type="button" class="delBtn" value="삭제" data-no="${replyNum}">
+                                            <input type="button" class="updateBtn" value="수정" data-no="${replyNum}">
+                                        </td>
+                                    </tr>`;
+                        $("#replyText").val(""); // input 상자 초기화
+                        $("#target").prepend(data);
+                        $(".delBtn").on("click", deleteReply);
+                        $(".updateBtn").on("click", updateReply);
+                        $(".likeBtn").on("click", likeReply);
+                    }
+                }) // end ajax
+            } else{ // 댓글 수정일 때
+                let replyNum = $(this).attr("data-no");
+                // 수정할 내용 다시 가져오기
+                let updateText = $("#replyText").val();
+                console.log(updateText)
+                $.ajax({
+                    url:"/reply/replyUpdate",
+                    method:"GET",
+                    data:{"replyNum":replyNum,"replyText": updateText,"boardNum": boardNum },
+                    success:output
+                })
+                // 입력창 초기화
+                $("#replyText").val("");
+                $("#replyBtn").val("댓글작성");
+                $("#replyBtn").css({"background-color": "#0dcaf0", "border-color": "#0dcaf0" });
+                $("#replyBtn").attr("data-no", "");
+            }
+            
         }
 
         // 댓글 삭제
@@ -161,7 +190,20 @@
         
         // 댓글 수정
         function updateReply() {
-            let replynum = $(this).attr("data-no");
+            let replyNum = $(this).attr("data-no");
+            $.ajax({
+                url:"/reply/replySelect",
+                method : "GET",
+                data:{"replyNum": replyNum},
+                success:function(resp){
+                    let replyText = resp["replyText"];
+                    $("#replyText").val(replyText);
+                    $("#replyBtn").val("댓글수정");
+                    $("#replyBtn").css({ "background-color": "rgb(242, 242, 53)", "border-color": "rgb(242, 242, 53)" });
+                    $("#replyBtn").attr("data-no",replyNum);
+                }
+            })
+
         }
 
         // 댓글 좋아요
@@ -215,6 +257,7 @@
         <input type="hidden" id="boardNum" th:value="${board.boardNum}">    
         <input type="hidden" id="boardFavoriteCount" th:value="${board.favoriteCount}">
         <input type="hidden" id="contextPath" th:value="${contextPath}">
+        <input type="hidden" id="loginId" th:value="${#authentication.name}"> <!--로그인한 아이디값이 담긴 hidden 태그-->
         
         <div class="like">
             <img th:src="@{/img/like.png}" id="boardLikeBtn" alt="좋아요" data-click="false">
@@ -262,8 +305,11 @@
             </tr>
             <tr>
                 <th colspan="2">
-                    <a th:href="@{/board/boardUpdate(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-primary">수정</a>
-                    <a th:href="@{/board/boardDelete(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>
+                    <!-- 글 삭제와 수정은 글쓴이와 로그인한 사람과 동일한 경우에만 나타나야 함 -->
+                    <th:block th:if="${board.boardWriter==#authentication.name}">                        
+                        <a th:href="@{/board/boardUpdate(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-primary">수정</a>
+                        <a th:href="@{/board/boardDelete(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-danger">삭제</a>
+                    </th:block>
                     <a th:href="@{/board/boardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-info">목록</a>
                 </th>
             </tr>
@@ -272,7 +318,7 @@
         <!-- 댓글 입력 부분 : 로그인한 사람만 가능 -->
         <div class="reply-write">
             <input type="text" id="replyText" placeholder="댓글 내용 입력">
-            <input type="button" id="replyBtn" class="btn-info btn" value="댓글작성">
+            <input type="button" id="replyBtn" class="btn-info btn" value="댓글작성" data-no="">
         </div>
 
         <!-- 댓글 목록 출력 부분 -->
@@ -289,15 +335,6 @@
         </div>
     
     </div> <!--.content 끝-->
-
-    
-        
-    
-
-
-
-
-
 
 
 </body>

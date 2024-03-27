@@ -1,10 +1,9 @@
 package net.kdigital.board.controller;
-
+ 
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.ServletOutputStream;
@@ -70,15 +68,11 @@ public class BoardController {
         int page = pageable.getPageNumber();
 
         PageNavigator  navi = new PageNavigator(pageLimit, page, totalPages);
-
-        // 댓글 수
-        Map<Long, String> replyCount = boardService.replyCount();
     
         // log.info("{}",replyCount);
         // log.info("{}",replyCount.get(125L));
 
         model.addAttribute("list", list);
-        model.addAttribute("replyCount", replyCount);
         model.addAttribute("searchItem", searchItem);
         model.addAttribute("searchWord", searchWord);
         model.addAttribute("navi", navi);
@@ -141,7 +135,7 @@ public class BoardController {
         
         return "board/boardDetail";
     }
- 
+
 
     /**
      * boardNum에 해당하는 글 삭제
@@ -203,7 +197,7 @@ public class BoardController {
         rttr.addAttribute("searchWord", searchWord);
         return "redirect:/board/boardDetail";
     }
- 
+
 
     /**
      * boardNum에 해당하는 첨부파일 다운로드 요청
@@ -255,15 +249,5 @@ public class BoardController {
         return null;
     }
 
-    @GetMapping("/incrementFavoriteCount")
-    @ResponseBody
-    public int incrementFavoriteCount(@RequestParam(name = "boardNum") Long boardNum,
-                                        @RequestParam(name = "count") int count) {
-        int like = boardService.incrementFavoriteCount(boardNum,count);
-        return like;
-    }
     
-
-
-
 }

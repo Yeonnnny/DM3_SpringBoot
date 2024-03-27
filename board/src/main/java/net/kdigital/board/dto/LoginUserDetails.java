@@ -48,8 +48,17 @@ public class LoginUserDetails implements UserDetails {
         return this.userPwd;
     }
     
+    // ID 반환 (Override) - Security가 설정한 값이므로 PK를 써야함. 변경하면 안됨
     @Override
     public String getUsername() {  // Security에서 username은 id를 말함
+        return this.userId;
+    }
+    
+    /**
+     * 진짜 회원 이름 반환하는 함수 (사용자 정의 함수)
+     * @return
+     */
+    public String getUserName() { 
         return this.userName;
     }
     
