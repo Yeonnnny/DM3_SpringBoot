@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- css 설정 -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+    <!-- JQuery 설정 -->
+    <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+    <script>
+        $(function(){
+            $("#predBtn").on('click', predict)
+        })
+
+        function predict() {
+            let sepalLength = $("#sepalLength").val();
+            let sepalWidth = $("#sepalWidth").val();
+            let petalLength = $("#petalLength").val();
+            let petalWidth = $("#petalWidth").val();
+
+            let sendData = {"sepalLength":sepalLength,"sepalWidth":sepalWidth, "petalLength":petalLength, "petalWidth":petalWidth}
+
+            $.ajax({
+                url: "predict",
+                method:"POST",
+                async : false, // 응답이 올때까지 기다리겠다는 의미
+                data : sendData,
+                success:function(resp){
+                    alert("예측결과 : "+JSON.stringify(resp))
+                }
+            });
+
+        }
+    </script>
+
+</head>
+<body>
+    <input type="hidden" id="loginUserName" th:value="${loginUserName}">
+    
+    <div class="container">
+
+        <div class="logo">
+            <a th:href="@{/}"> <img th:src="@{/img/logo.png}" alt=""> </a>
+            <!-- <img src="../static/img/logo.png" alt=""> -->
+            <h2>로고</h2>
+        </div>
+
+        <div class="content">
+            <form th:action="@{/predict}" method="POST">
+                <span> Sepal Length :
+                    <input type="text" name="sepalLength" id="sepalLength" placeholder="꽃잎의 길이">
+                </span>
+                <br>
+                <span> Sepal Width :
+                    <input type="text" name="sepalWidth" id="sepalWidth" placeholder="꽃잎의 너비">
+                </span>
+                <br>
+                <span> Petal Length :
+                    <input type="text" name="petalLength" id="petalLength" placeholder="꽃받침의 길이">
+                </span>
+                <br>
+                <span> Petal Width :
+                    <input type="text" name="petalWidth" id="petalWidth" placeholder="꽃받침의 너비">
+                </span>
+                <br><br>
+
+                <input type="button" id="predBtn" value="예측">
+            </form>
+            
+        </div>
+
+    </div><!--.container 끝-->
+
+
+</body>
+</html>

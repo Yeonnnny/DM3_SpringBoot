@@ -6,4 +6,12 @@
         - json,xml을 쉽게 응답
         - HTTP 서버와의 통신을 단순화
 
+## FastAPI 사용을 위한 설치
+1) fastapi
+pip install fastapi
 
+2) uvicorn
+pip install uvicorn
+
+3) 유비콘 서버 구동하기
+uvicorn main:app --reload
