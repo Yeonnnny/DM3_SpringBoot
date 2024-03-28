@@ -29,7 +29,7 @@
                 <!-- <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">[[${#authentication.name}]]님, 로그아웃</a> </li> --> <!--로그인 아이디로-->
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">[[${loginUserName}]]님, 로그아웃</a> </li> <!--로그인 이름으로-->
                 <li sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/predict}">머신러닝 붓꽃예측</a> </li> <!--로그인 이름으로-->
-                <!-- <li sec:authorize="isAuthenticated()"><a th:href="@{/predict}">머신러닝 붓꽃예측</a> </li> 로그인 이름으로 -->
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/predict/weird}">상품예측</a></li>
 
                 <!-- 인증과 관계없음 -->
                 <li><a th:href="@{/board/boardList}">게시판</a> </li>

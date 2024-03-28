@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품예측</title>
+
+    <!-- css 설정 -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+    <!-- JQuery 설정 -->
+    <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+    <script>
+        $(function () {
+            $("#predBtn").on('click', predict)
+        })
+
+        function predict() {
+            let catalogNm = $("#catalogNm").val();
+            let catalogDesc = $("#catalogDesc").val();
+            console.log("스크립트단에 왔어");
+            let sendData = {"catalogNm": catalogNm, "catalogDesc": catalogDesc}
+
+            $.ajax({
+                url: "/predict/weird",
+                method: "POST",
+                async: false, // 응답이 올때까지 기다리겠다는 의미
+                data: sendData,
+                success: function (resp) {
+                    alert("예측결과 : " + JSON.stringify(resp))
+                }
+            });
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <input type="hidden" id="loginUserName" th:value="${loginUserName}">
+
+    <div class="container">
+
+        <div class="logo">
+            <a th:href="@{/}"> <img th:src="@{/img/logo.png}" alt=""> </a>
+            <!-- <img src="../static/img/logo.png" alt=""> -->
+            <h2>상품예측</h2>
+        </div>
+
+        <div class="content">
+            <form th:action="@{/predict/weird}" method="POST">
+                <span> Catalog Name:
+                    <input type="text" name="catalogNm" id="catalogNm" placeholder="상품명">
+                </span>
+                <br>
+                <span> Catalog Description :
+                    <input type="text" name="catalogDesc" id="catalogDesc" placeholder="상품설명">
+                </span>
+                <br><br>
+
+                <input type="button" id="predBtn" value="예측">
+            </form>
+
+        </div>
+
+    </div><!--.container 끝-->
+
+
+</body>
+
+</html>
