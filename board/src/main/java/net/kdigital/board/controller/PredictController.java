@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.Iris;
+import net.kdigital.board.dto.Product;
 import net.kdigital.board.service.PredictService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Slf4j
@@ -39,6 +42,21 @@ public class PredictController {
         Map<String, String> result = predictService.predictRest(iris);
         return result;
     }
+
+
+    @GetMapping("/predict/weird")
+    public String weird() {
+        return "predict/weird";
+    }
+    
+    @PostMapping("/predict/weird")
+    @ResponseBody
+    public Map<String, String> weird(@ModelAttribute Product product) {
+        log.info("============ 지금 컨트롤러야 {}",product.toString());
+        Map<String, String> result = predictService.predictRest(product);
+        return result;
+    }
+    
 
     
 }

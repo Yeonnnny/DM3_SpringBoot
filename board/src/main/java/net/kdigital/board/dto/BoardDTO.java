@@ -31,16 +31,18 @@ public class BoardDTO {
     private MultipartFile uploadFile;
     private String originalFileName;    // 원본 파일의 파일명
     private String savedFileName;       // 하드디스크에 저장될 파일
-
+    // 댓글 수
+    private int replyCount;
 
     // 생성자 (페이징을 위한 생성자, boardList에서 사용할 내용으로 추림)
     
-    public BoardDTO(Long boardNum, String boardWriter, String boardTitle, int hitCount, LocalDateTime createDate,
+    public BoardDTO(Long boardNum, String boardWriter, String boardTitle, int hitCount, int replyCount, LocalDateTime createDate,
             String originalFileName) {
         this.boardNum = boardNum;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
         this.hitCount = hitCount;
+        this.replyCount = replyCount;
         this.createDate = createDate;
         this.originalFileName = originalFileName;
     }
@@ -59,6 +61,7 @@ public class BoardDTO {
                 .updateDate(boardEntity.getUpdateDate())
                 .originalFileName(boardEntity.getOriginalFileName())
                 .savedFileName(boardEntity.getSavedFileName())
+                .replyCount(boardEntity.getReplyCount())
                 .build();
 
     }

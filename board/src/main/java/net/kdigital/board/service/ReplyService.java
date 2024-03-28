@@ -34,14 +34,14 @@ public class ReplyService {
             return null;
         }
     }
- 
+
     /**
      * 전달받은 boardNum에 해당하는 게시글의 댓글 목록 반환
      * @param boardNum
      * @return
      */
     public List<ReplyDTO> replyAll(Long boardNum) {
-        BoardEntity boardEntity = boardRepository.findById(boardNum).get();
+        BoardEntity boardEntity = boardRepository.findById(boardNum).get(); 
         
         List<ReplyEntity> replyEntityList = replyRepository.findAllByBoardEntityOrderByReplyNumDesc(boardEntity);
         /**

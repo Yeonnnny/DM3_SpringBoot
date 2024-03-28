@@ -1,5 +1,5 @@
 package net.kdigital.board.controller;
- 
+
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -69,10 +69,8 @@ public class BoardController {
 
         PageNavigator  navi = new PageNavigator(pageLimit, page, totalPages);
     
-        // log.info("{}",replyCount);
-        // log.info("{}",replyCount.get(125L));
 
-        model.addAttribute("list", list);
+        model.addAttribute("list", list); 
         model.addAttribute("searchItem", searchItem);
         model.addAttribute("searchWord", searchWord);
         model.addAttribute("navi", navi);

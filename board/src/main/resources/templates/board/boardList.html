@@ -12,10 +12,10 @@
     <!-- JQuery 설정 -->
     <script th:src="@{/script/jquery-3.7.1.min.js}"></script>
 
-
 </head>
 
 <body>
+    <input type="hidden" id="replyCountMap" th:value="${replyCountMap}">
 
     <div class="container">
         <div class="logo">
@@ -70,8 +70,10 @@
                     <td th:text="${(list.number+1)*list.size - (list.size-status.count)}"></td>
                     <td><a th:href="@{/board/boardDetail(boardNum=${board.boardNum}, searchItem=${searchItem}, searchWord=${searchWord})}" th:text="${board.boardTitle}"></a>
                         <!-- 댓글 수 -->
-                        <input type="hidden" id="boardNumForReply" th:val="${board.boardNum}">
-                        <span id="replyCount"></span>
+                        <!-- <input type="hidden" id="boardNumForReply" th:val="${board.boardNum}"> -->
+                        <th:block th:if="${board.replyCount!=0}">
+                            <span id="replyCount">([[${board.replyCount}]])</span>
+                        </th:block>
                         <!-- 첨부파일 여부 -->
                         <span th:if="${board.originalFileName}!=null">
                             <img th:src="@{/img/clip.png}" alt="첨부파일" width="17px">

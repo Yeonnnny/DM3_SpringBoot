@@ -74,7 +74,11 @@ pageLimit -> 한 페이지당 10개 (설정한 값)
 1그룹 : 11~20
 ...
 
-
+# 게시판 목록에 댓글 수 반환
+- dto에 replyCount라는 변수 생성
+- entity에도 replyCount 변수를 생성하는데 @Transient라는 어노테이션을 씀.
+    - @Transient가 붙은 필드는 엔티티 객체에만 존재하며, 데이터베이스에 저장되지 않는 임시적인 필드로 만들어짐
+- boardEntity의 getReplyCount() 함수 : 자식의 사이즈를 반환하는 함수
 
 
 # 테이블

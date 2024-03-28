@@ -17,9 +17,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,7 +29,6 @@ import net.kdigital.board.dto.BoardDTO;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Getter
 @ToString
 @Entity
 @Table(name = "board")
@@ -71,6 +70,12 @@ public class BoardEntity {
     @Column(name="saved_file_name")
     private String savedFileName; // 하드디스크에 저장될 파일
 
+    // 댓글 수
+    @Transient
+    private int replyCount;
+
+    
+
     /**
      * REPLY와의 관계 설정
      * mappedBy : one에 해당하는 테이블 엔티티 
@@ -80,6 +85,50 @@ public class BoardEntity {
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("reply_num desc")
     private List<ReplyEntity> replyEntity = new ArrayList<>(); // 생성자에 넣어주지않아도 됨. JQuery에서 알아서 자식을 끌어 옴
+
+
+    //-------------------------------- Getter --------------------------------
+
+    public Long getBoardNum() {
+        return boardNum;
+    }
+    public String getBoardWriter() {
+        return boardWriter;
+    }
+    public String getBoardTitle() {
+        return boardTitle;
+    }
+    public String getBoardContent() {
+        return boardContent;
+    }
+    public int getHitCount() {
+        return hitCount;
+    }
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+    public String getSavedFileName() {
+        return savedFileName;
+    }
+    public List<ReplyEntity> getReplyEntity() {
+        return replyEntity;
+    }
+
+    // 댓글 수 Get함수
+    public int getReplyCount() {
+        return replyEntity != null ? replyEntity.size() : 0;
+    }
+
+    //---------------------------------------------------------------------------------
 
 
     // DTO를 받아서 Entity로 반환
@@ -93,6 +142,7 @@ public class BoardEntity {
                 .favoriteCount(boardDTO.getFavoriteCount())
                 .originalFileName(boardDTO.getOriginalFileName())
                 .savedFileName(boardDTO.getSavedFileName())
+                .replyCount(boardDTO.getReplyCount())
                 .build();
     }
 
