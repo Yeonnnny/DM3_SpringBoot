@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th= "http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<!-- fontawesome 사용 CDN 설정 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- CSS 설정 -->
+<link rel="stylesheet" th:href="@{/css/user.css}">
+
+<script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+<script>
+	$(function() {
+		$("#userId").on('keyup', confirm);
+	});
+	
+	function confirm() {
+		// 회원가입 버튼 불가능 상태
+		$("#submitBtn").prop("disabled", true);
+		let joinFlag = false;
+		
+		let userId = $("#userId").val();
+		
+		if(userId.trim().length < 3 || userId.trim().length > 5) {
+			$("#confirmId").css("color", "red");
+			$("#confirmId").html("길이는 3~5사이!!");
+			return ;
+		}
+		
+		// ajax 처리
+		$.ajax({
+			url: "/user/confirmId"
+			, method: "POST"
+			, data : {"userId" : userId}
+			, async : false
+			, success : function(resp) {
+				if(resp) {
+					$("#confirmId").css("color", "blue");
+					$("#submitBtn").prop("disabled", false);
+					$("#confirmId").html("사용 가능한 아이디 입니다.");
+					joinFlag = true;
+				} else {
+					$("#confirmId").css("color", "red");
+					$("#submitBtn").prop("disabled", true);
+					$("#confirmId").html("사용 불가능한 아이디 입니다.");
+					joinFlag = false;
+				}
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div class="container">
+        <div class="logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
+            <h2>회원 가입</h2>
+        </div>
+    </div> <!-- .container 끝 -->
+    
+    <div class="content">
+    	<form th:action="@{/user/joinProc}" method="POST">
+    		<div class="section pointColor">
+    			<div class="article">
+    				<ul>
+    					<li>
+    						<i class="fa-solid fa-fingerprint"></i>
+    						<input type="text" id="userId" name="userId" placeholder="ID">
+    						<div id="confirmId" style="font-size:0.8em;"></div>
+    					</li>
+
+     					<li>
+     						<i class="fa-solid fa-lock"></i>
+    						<input type="password" name="userPwd" placeholder="Password">
+    					</li>   
+    					<li>
+    						<i class="fa-solid fa-user"></i>
+    						<input type="text" name="userName" placeholder="Name">
+    					</li>
+    					<li>
+    						<i class="fa-solid fa-envelope"></i>
+    						<input type="email" name="email" placeholder="Email">
+    					</li> 
+    				</ul>
+    				
+    				<div class="btns">
+    					<input type="submit" id="submitBtn" value="회원가입" class="btn btn-primary">
+    					<input type="reset"  id="resetBtn"  value="초기화"   class="btn btn-secondary">
+    				</div>
+    				
+    			</div>
+    		</div>
+    	</form>
+    
+    </div>
+    
+</body>
+</html>
+
+
+
+
+
+
+

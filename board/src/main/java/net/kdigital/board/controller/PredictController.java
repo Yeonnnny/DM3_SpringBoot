@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.kdigital.board.dto.Iris;
 import net.kdigital.board.dto.Product;
 import net.kdigital.board.service.PredictService;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @Slf4j

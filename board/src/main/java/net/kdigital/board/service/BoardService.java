@@ -39,7 +39,7 @@ public class BoardService {
      * @param searchItem 
      * 
      * @return dtoList
-     */
+     */ 
     public Page<BoardDTO> selectAll(Pageable pageable, String searchItem, String searchWord) {
         int page = pageable.getPageNumber()-1; // 사용자가 요청한 페이지 번호
         // -1을 한 이유 : page 위치의 값은 0부터 시작함

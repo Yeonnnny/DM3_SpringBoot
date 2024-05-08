@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정화면</title>
+
+    <link rel="stylesheet" th:href="@{/css/write.css}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
+            <h2>게시글 수정</h2>
+        </div>
+    </div> <!-- .container 끝 -->
+
+    <!-- 글 수정 -->
+    <div class="content">
+        <form th:action="@{/board/boardUpdate}" method="POST" enctype="multipart/form-data">
+        	<input type="hidden" name="boardNum" th:value="${board.boardNum}">
+        	<input type="hidden" name="searchItem" th:value="${searchItem}">
+        	<input type="hidden" name="searchWord" th:value="${searchWord}">
+            <table border="1">
+                <tr>
+                    <th>작성자</th>
+                    <td><input id="boardWriter" type="text" name="boardWriter" th:value="${board.boardWriter}" readonly></td>
+                </tr>
+                <tr>
+                    <th>글제목</th>
+                    <td><input id="boardTitle" type="text" name="boardTitle" th:value="${board.boardTitle}"  required></td>
+                </tr>
+                <tr>
+                    <th>글내용</th>
+                    <td>
+                        <textarea name="boardContent" id="boardContent" cols="30" rows="10" required>[[ ${board.boardContent }]]</textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>첨부파일</th>
+                    <td>
+                    	<input id="uploadFile" type="file" name="uploadFile">
+                    	<span th:text="${board.originalFileName}">첨부파일명</span>	
+                    </td>
+                </tr>
+
+                <tr>
+                    <th colspan="2">
+
+                        <input type="submit" value="글수정" class="btn btn-primary"> &nbsp;
+                        <a th:href="@{/board/boardList(searchItem=${searchItem}, searchWord=${searchWord})}" class="btn btn-info">목록</a>
+                    </th>
+
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+
+</html>
+
+
+
+
+

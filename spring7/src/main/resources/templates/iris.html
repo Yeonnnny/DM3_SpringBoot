@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th= "http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>예측</title>
+
+	<!-- CSS 설정 -->
+	<link rel="stylesheet" th:href="@{/css/predict.css}">
+	<script th:src="@{/script/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/script/predict.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
+            <h2>예측</h2>
+        </div>
+		<p><img th:src="@{/images/iris.jpg}"></p>
+		<ul class="flower">
+			<li>
+				<label for="sepalLength">꽃받침(Sepal Length)의 길이:</label>
+				<input type="text" id="sepalLength" name="sepalLength">
+			</li>
+			<li>
+				<label for="sepalWidth">꽃받침(Sepal Width)의 너비:</label>
+				<input type="text" id="sepalWidth" name="sepalWidth">
+			</li>
+			<li>
+				<label for="petalLength">꽃잎(Petal Length)의 길이:</label>
+				<input type="text" id="petalLength" name="petalLength">
+			</li>
+			<li>
+				<label for="petalWidth">꽃잎(Petal Width)의 너비:</label>
+				<input type="text" id="petalWidth" name="petalWidth">
+			</li>
+	
+			<li>
+				<input type="button" id="predictBtn" value="결과보기" class="btn btn-primary">
+			</li>	
+		</ul>
+		<h3>분류 결과: <span id="result"></span></h3>
+					    
+    </div> <!-- .container 끝 -->
+</body>
+
+</html>
+
+ 
+
+
+
+
+

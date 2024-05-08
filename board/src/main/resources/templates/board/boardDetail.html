@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+ 
 <!-- thymeleaf 해석 : 서버에서 함 -->
 <!-- JQuery 해석 : 웹브라우저에서 함 -->
 
@@ -301,6 +301,10 @@
                     <span th:if="${board.originalFileName}!=null" class="attach">
                         <a th:href="@{/board/download(boardNum=${board.boardNum})}" th:text="${board.originalFileName}"> bts.jpg</a>
                     </span>
+                    <!--이미지 화면에 뿌려줄 떄 -->
+                    <!-- <span th:if="${board.originalFileName}!=null" class="attach">
+                        <img th:src="@{/board/download(boardNum=${board.boardNum})}" >
+                    </span> -->
                 </td>
             </tr>
             <tr>
